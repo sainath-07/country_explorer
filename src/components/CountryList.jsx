@@ -6,23 +6,24 @@ import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 
 const CountryList = () => {
-  const [countryList, setCoutryList] = useState([]);
-  const [perPage, setPerPage] = useState([]);
+  const [countryList, setCoutryList] = useState([]); // State to hold the list of countries
+  const [perPage, setPerPage] = useState([]); // State to hold countries per page
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State to handle loading status
 
-  const [isContinent, setContinent] = useState("All");
+  const [isContinent, setContinent] = useState("All"); // State to filter countries by continent
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(""); // State for the search input value
 
-  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false); // State to show scroll-to-top button
 
-  const [pageNo, setPageNo] = useState(1);
+  const [pageNo, setPageNo] = useState(1); // State to track the current page number
 
   const [placeholderText, setPlaceholderText] = useState(
     `🔍 Search by "Country"`
-  );
+  ); // State for the placeholder text
 
+  // Showing the placeholder text dynamically for every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderText((prev) =>
@@ -46,6 +47,7 @@ const CountryList = () => {
     { id: 8, text: "Antarctica", value: "Antarctica" },
   ];
 
+  // API call to fetch all countries &&  Handle scroll events to show/hide scroll-to-top button
   useEffect(() => {
     fetchAllCoutries();
 
@@ -69,7 +71,7 @@ const CountryList = () => {
     });
   };
 
-  // Api call
+  // API call to fetch all countries
   const fetchAllCoutries = async () => {
     setIsLoading(true);
     try {
@@ -91,7 +93,7 @@ const CountryList = () => {
     setSearch(value);
   };
 
-  // Country list Filter Logic
+  // Filter countries based on continent and search term
   const filteredCountries =
     isContinent === "All" && search === ""
       ? perPage
@@ -111,11 +113,10 @@ const CountryList = () => {
                 ) // filter by Continent
         );
 
-  // pagaination slice
+  // Pagination logic
   const handlePagination = (pageNumber) => {
     setContinent("All");
     setSearch("");
-
     setPageNo(pageNumber);
     setPerPage(countryList.slice(pageNumber * 25 - 25, pageNumber * 25));
   };
@@ -192,17 +193,16 @@ const CountryList = () => {
                     alt=""
                     className="w-full h-[200px] object-cover rounded-t-lg"
                   />
-                  <span className="pl-2 font-raleway font-bold text-lg">
+                  <span className="pl-2 truncate font-raleway font-bold text-lg">
                     continent : {element.continents[0]}
                   </span>
-                  <span className="pl-2 font-raleway font-semibold text-md">
+                  <span className="pl-2 truncate font-raleway font-semibold text-md">
                     Country: {element?.name?.common}
                   </span>
-                  {element?.subregion && (
-                    <span className="pl-2 font-raleway font-semibold text-md">
-                      Sub region : {element?.subregion}
-                    </span>
-                  )}
+                  <span className="pl-2 truncate font-raleway font-semibold text-md">
+                    Captial: {element?.capital}
+                  </span>
+
                   {/* <span className="pl-2 font-raleway font-semibold text-md">
                   id : {index + 1 + (pageNo - 1) * 25}
                 </span> */}

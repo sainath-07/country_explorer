@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import worldMap from "../earth.png";
+import worldMap from "../assets/earth.png";
 
 const Header = () => {
   return (
     <>
+      {/* Header component with fixed logo and text */}
       <div className=" border-red-400 bg-opacity-70 backdrop-blur-lg bg-[#FFFFFF]  w-full fixed left-0 top-0  text-black h-[75px] flex  justify-between items-center  shadow-md z-20">
         <div className="flex S_Mobile:w-full Tablet:w-[50%]  items-center  gap-2  px-2">
           <img

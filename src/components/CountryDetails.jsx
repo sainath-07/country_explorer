@@ -5,8 +5,9 @@ import { FadeLoader } from "react-spinners";
 
 const CountryDetails = () => {
   const { CountryName } = useParams();
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState(null); //State for handling the country Details.
 
+  // Make the Api call for each Country
   useEffect(() => {
     const fetchCountryData = async () => {
       try {
@@ -22,6 +23,7 @@ const CountryDetails = () => {
     fetchCountryData();
   }, [CountryName]);
 
+  // If country is false then show the loader in the UI
   if (!country) {
     return (
       <div className="text-center flex justify-center items-center gap-8 py-8 ">
@@ -31,7 +33,7 @@ const CountryDetails = () => {
   }
 
   return (
-    <div className="  rounded-lg  py-4 flex flex-col bg-[#F6F6F6] items-center justify-center w-screen h-full px-2">
+    <div className="  rounded-lg py-4  flex flex-col bg-[#F6F6F6] items-center justify-center min-h-screen  px-2 ">
       <h2 className="text-xl  L_Mobile:text-2xl  font-raleway font-bold mb-6 text-center text-blue-500">
         Country: {country?.name?.common}
       </h2>

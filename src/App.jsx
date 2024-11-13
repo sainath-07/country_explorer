@@ -1,14 +1,20 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
-import ProductsList from "./components/ProductsList";
+import Navigation from "./components/Navigation";
+import PageNotFound from "./components/PageNotFound";
+import CountryDetails from "./components/CountryDetails";
 
 const App = () => {
   return (
     <>
-      <div className="w-full min-h-screen  bg-[#F6F6F6]">
-        <Header />
-        <ProductsList />
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigation />} />
+        <Route
+          path="/country/name/:CountryName/:id"
+          element={<CountryDetails />}
+        />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </>
   );
 };

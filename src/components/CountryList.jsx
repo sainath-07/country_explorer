@@ -3,8 +3,9 @@ import { ArrowUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 // import { FadeLoader } from "react-spinners";
 import Pagination from "./Pagination";
+import { Link } from "react-router-dom";
 
-const ProductsList = () => {
+const CountryList = () => {
   const [countryList, setCoutryList] = useState([]);
   const [perPage, setPerPage] = useState([]);
 
@@ -111,7 +112,7 @@ const ProductsList = () => {
       <div className="flex justify-between flex-wrap gap-3 mt-4 ">
         {/* Filter by continents */}
 
-        <div className="flex flex-wrap gap-2   Tablet:px-4 Laptop:px-0    items-center ">
+        <div className="flex  flex-wrap gap-2   Tablet:px-4 Laptop:px-0    items-center ">
           {continentData.map(({ text, value, id }) => (
             <span
               key={id}
@@ -144,7 +145,7 @@ const ProductsList = () => {
         <div className="S_Mobile:w-full  Laptop:w-auto   flex justify-center items-center ">
           <input
             type="text"
-            className="border-2 outline-none hover:shadow-[1px_1px_5px_2px_#fac031] focus:shadow-[1px_1px_5px_2px_#fac031]  rounded-full pl-3 px-2 py-2 S_Mobile:w-full  L_Mobile:w-[400px] font-raleway font-bold"
+            className="border-2 outline-none hover:shadow-[1px_1px_5px_2px_#fac031] focus:shadow-[1px_1px_5px_2px_#fac031]  rounded-full pl-3 px-1 py-2 S_Mobile:w-full  L_Mobile:w-[400px] font-raleway font-bold"
             placeholder={`🔍 Search by "Countries" OR "Capital"`}
             value={search}
             onChange={handleSearch}
@@ -158,42 +159,40 @@ const ProductsList = () => {
           new Array(25).fill(null).map((_, index) => (
             <div
               key={index} // Unique key for each loading item
-              className="flex flex-col w-[250px] gap-2 pb-2 rounded-lg cursor-pointer shadow-lg transition-all duration-800 hover:scale-105 animate-pulse bg-gray-200"
+              className="flex flex-col w-[250px] gap-2 pb-2 rounded-lg cursor-pointer shadow-lg transition-all duration-800 hover:scale-105 animate-pulse bg-gray-200 overflow-hidden"
             >
               <div className="w-full h-[200px] bg-gray-300 rounded-md"></div>
-              <span className="w-3/4 ml-2 h-4 bg-gray-300 rounded-md "></span>
-              <span className="w-1/2 ml-2 h-4 bg-gray-300 rounded-md "></span>
+              <span className="w-3/2 mx-2 h-4 bg-gray-300 rounded-md "></span>
+              <span className="w-3/2 mx-2 h-4 bg-gray-300 rounded-md "></span>
+              <span className="w-1/2 mx-2 h-4 bg-gray-300 rounded-md "></span>
             </div>
           ))
         ) : Array.isArray(filteredCountries) && filteredCountries.length > 0 ? (
           filteredCountries.map((element, index) => (
             <React.Fragment key={index}>
-              <div className="flex flex-col w-[250px] gap-2 pb-2 rounded-lg cursor-pointer shadow-lg transform transition-all duration-300 hover:scale-105">
-                <img
-                  src={element?.flags?.svg}
-                  alt=""
-                  className="w-full h-[200px] object-cover"
-                />
-                <span className="pl-2 font-raleway font-bold text-lg">
-                  {element &&
-                    element.continents.map((ele, index) => (
-                      <React.Fragment key={index}>
-                        continent : {ele}
-                      </React.Fragment>
-                    ))}
-                </span>
-                <span className="pl-2 font-raleway font-semibold text-md">
-                  Country: {element?.name?.common}
-                </span>
-                {element?.subregion && (
-                  <span className="pl-2 font-raleway font-semibold text-md">
-                    Sub region : {element?.subregion}
+              <Link to={`/country/name/${element?.name?.common}/${index + 1}`}>
+                <div className="flex  flex-col w-[250px] gap-2 pb-2 rounded-lg cursor-pointer shadow-lg transform transition-all duration-300 hover:scale-105">
+                  <img
+                    src={element?.flags?.svg}
+                    alt=""
+                    className="w-full h-[200px] object-cover rounded-t-lg"
+                  />
+                  <span className="pl-2 font-raleway font-bold text-lg">
+                    continent : {element.continents[0]}
                   </span>
-                )}
-                {/* <span className="pl-2 font-raleway font-semibold text-md">
+                  <span className="pl-2 font-raleway font-semibold text-md">
+                    Country: {element?.name?.common}
+                  </span>
+                  {element?.subregion && (
+                    <span className="pl-2 font-raleway font-semibold text-md">
+                      Sub region : {element?.subregion}
+                    </span>
+                  )}
+                  {/* <span className="pl-2 font-raleway font-semibold text-md">
                   id : {index + 1 + (pageNo - 1) * 25}
                 </span> */}
-              </div>
+                </div>
+              </Link>
             </React.Fragment>
           ))
         ) : (
@@ -223,4 +222,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default CountryList;

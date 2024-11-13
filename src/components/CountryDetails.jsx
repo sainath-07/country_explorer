@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { FadeLoader } from "react-spinners";
 
 const CountryDetails = () => {
   const { CountryName } = useParams();
@@ -22,12 +23,16 @@ const CountryDetails = () => {
   }, [CountryName]);
 
   if (!country) {
-    return <div className="text-center py-8">Loading...</div>;
+    return (
+      <div className="text-center flex justify-center items-center gap-8 py-8 ">
+        Loading... <FadeLoader color="#7dd980" />{" "}
+      </div>
+    );
   }
 
   return (
-    <div className="  rounded-lg  flex flex-col bg-[#F6F6F6] items-center justify-center w-screen h-full px-2">
-      <h2 className="text-xl  mt-4 L_Mobile:text-2xl  font-raleway font-bold mb-6 text-center text-blue-500">
+    <div className="  rounded-lg  py-4 flex flex-col bg-[#F6F6F6] items-center justify-center w-screen h-full px-2">
+      <h2 className="text-xl  L_Mobile:text-2xl  font-raleway font-bold mb-6 text-center text-blue-500">
         Country: {country?.name?.common}
       </h2>
       {/* Country Card Container */}

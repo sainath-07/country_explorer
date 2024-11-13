@@ -19,6 +19,21 @@ const CountryList = () => {
 
   const [pageNo, setPageNo] = useState(1);
 
+  const [placeholderText, setPlaceholderText] = useState(
+    `🔍 Search by "Country"`
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderText((prev) =>
+        prev === `🔍 Search by "Country"`
+          ? `🔍 Search by "Capital"`
+          : `🔍 Search by "Country"`
+      );
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [placeholderText]);
+
   //continent names
   const continentData = [
     { id: 1, text: "All", value: "All" },
@@ -42,7 +57,9 @@ const CountryList = () => {
     window.addEventListener("scroll", handleScroll);
 
     // Cleanup on component unmount
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -103,8 +120,6 @@ const CountryList = () => {
     setPerPage(countryList.slice(pageNumber * 25 - 25, pageNumber * 25));
   };
 
-  console.log("isContinent-->", isContinent);
-
   return (
     <div className="pt-20 w-full S_Mobile:px-4 Laptop:px-8 flex flex-col gap-8">
       {/* filter by continent and search the countries */}
@@ -145,8 +160,8 @@ const CountryList = () => {
         <div className="S_Mobile:w-full  Laptop:w-auto   flex justify-center items-center ">
           <input
             type="text"
-            className="border-2 outline-none hover:shadow-[1px_1px_5px_2px_#fac031] focus:shadow-[1px_1px_5px_2px_#fac031]  rounded-full pl-3 px-1 py-2 S_Mobile:w-full  L_Mobile:w-[400px] font-raleway font-bold"
-            placeholder={`🔍 Search by "Countries" OR "Capital"`}
+            className="border-2 outline-none hover:shadow-[1px_1px_5px_2px_#fac031] focus:shadow-[1px_1px_5px_2px_#fac031]  rounded-full pl-3 px-1 py-2 S_Mobile:w-full  L_Mobile:w-[400px] font-raleway font-bold transition-all duration-200 ease-in-out"
+            placeholder={placeholderText}
             value={search}
             onChange={handleSearch}
           />

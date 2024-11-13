@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ArrowUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { FadeLoader } from "react-spinners";
+// import { FadeLoader } from "react-spinners";
 import Pagination from "./Pagination";
 
 const ProductsList = () => {
@@ -58,11 +58,12 @@ const ProductsList = () => {
       let response = await axios.get("https://restcountries.com/v3.1/all");
       if (response.status === 200) {
         setIsLoading(false);
-        console.log(response?.data);
+        // console.log(response?.data);
         setCoutryList(response?.data);
         setPerPage(response?.data.slice(pageNo - 1, pageNo * 25));
       }
     } catch (error) {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -72,22 +73,36 @@ const ProductsList = () => {
     setSearch(value);
   };
 
+  // Country list Filter Logic
   const filteredCountries =
     isContinent === "All" && search === ""
       ? perPage
-      : perPage.filter((country) =>
-          search
-            ? country.name.common.toLowerCase().includes(search.toLowerCase())
-            : country.continents &&
-              country.continents.some((continent) => continent === isContinent)
+      : countryList?.filter(
+          (country) =>
+            search
+              ? country?.name?.common
+                  .toLowerCase()
+                  .includes(search.toLowerCase()) || //search By Country.
+                (country?.capital &&
+                  country?.capital?.find((capital) =>
+                    capital?.toLowerCase()?.includes(search?.toLowerCase())
+                  )) //searc by Capital.
+              : country?.continents &&
+                country?.continents?.find(
+                  (continent) => continent === isContinent
+                ) // filter by Continent
         );
 
   // pagaination slice
   const handlePagination = (pageNumber) => {
     setContinent("All");
+    setSearch("");
+
     setPageNo(pageNumber);
     setPerPage(countryList.slice(pageNumber * 25 - 25, pageNumber * 25));
   };
+
+  console.log("isContinent-->", isContinent);
 
   return (
     <div className="pt-20 w-full S_Mobile:px-4 Laptop:px-8 flex flex-col gap-8">
@@ -130,7 +145,7 @@ const ProductsList = () => {
           <input
             type="text"
             className="border-2 outline-none hover:shadow-[1px_1px_5px_2px_#fac031] focus:shadow-[1px_1px_5px_2px_#fac031]  rounded-full pl-3 px-2 py-2 S_Mobile:w-full  L_Mobile:w-[400px] font-raleway font-bold"
-            placeholder={`🔍 Search by "Countries"`}
+            placeholder={`🔍 Search by "Countries" OR "Capital"`}
             value={search}
             onChange={handleSearch}
           />
@@ -170,15 +185,20 @@ const ProductsList = () => {
                 <span className="pl-2 font-raleway font-semibold text-md">
                   Country: {element?.name?.common}
                 </span>
-                <span className="pl-2 font-raleway font-semibold text-md">
-                  index: {index + 1 + (pageNo - 1) * 25}
-                </span>
+                {element?.subregion && (
+                  <span className="pl-2 font-raleway font-semibold text-md">
+                    Sub region : {element?.subregion}
+                  </span>
+                )}
+                {/* <span className="pl-2 font-raleway font-semibold text-md">
+                  id : {index + 1 + (pageNo - 1) * 25}
+                </span> */}
               </div>
             </React.Fragment>
           ))
         ) : (
           <div className=" flex items-center gap-4 text-gray-500 text-lg font-raleway font-semibold ">
-            <span>No results found</span> <FadeLoader />
+            <span>No results found</span>
           </div>
         )}
       </div>
@@ -195,10 +215,9 @@ const ProductsList = () => {
 
       {/* pagination */}
       <Pagination
-        pageNo={pageNo}
         countryList={countryList}
-        setContinent={setContinent}
         handlePagination={handlePagination}
+        pageNo={pageNo}
       />
     </div>
   );

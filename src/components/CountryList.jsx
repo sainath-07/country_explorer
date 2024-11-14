@@ -90,6 +90,7 @@ const CountryList = () => {
 
   const handleSearch = (e) => {
     let { value } = e?.target;
+    value = value.trim();
     setSearch(value);
   };
 
